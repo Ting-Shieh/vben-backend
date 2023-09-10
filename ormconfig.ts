@@ -38,7 +38,8 @@ export function buildConnectionOptions() {
     username: config[ConfigEnum.DB_USERNAME],
     password: config[ConfigEnum.DB_PASSWORD],
     database: config[ConfigEnum.DB_DATABASE],
-    entities: entitiesDir,
+    // entities: entitiesDir,
+    autoLoadEntities: true,
     synchronize: true,
     logging: false,
   } as TypeOrmModuleOptions;

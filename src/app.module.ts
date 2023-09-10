@@ -36,7 +36,7 @@ const schema = Joi.object({
     AuthModule,
     BookModule,
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, UserService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
