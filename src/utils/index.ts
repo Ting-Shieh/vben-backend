@@ -1,14 +1,14 @@
-export function success(data, msg) {
+export function success(data, message) {
   return {
     code: 0,
-    data,
-    msg,
+    result: data,
+    message,
   };
 }
 
-export function error(msg) {
+export function error(message) {
   return {
     code: -1,
-    msg,
+    message,
   };
 }
