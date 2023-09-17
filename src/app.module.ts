@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { connectionParams } from 'ormconfig';
+import { MenuModule } from './modules/menu/menu.module';
 
 const envFilePath = [`.env.${process.env.NODE_ENV || `development`}`, '.env'];
 const schema = Joi.object({
@@ -35,6 +36,7 @@ const schema = Joi.object({
     UserModule,
     AuthModule,
     BookModule,
+    MenuModule,
   ],
   controllers: [AppController],
   providers: [AppService],
