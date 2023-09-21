@@ -39,7 +39,7 @@ export const MENU_LIST = `[
       {
         "path":"workbench",
         "name":"Workbench",
-        "meta":{"title":"routes.dashboard.workbench","roles": "[\\"super\\"]"}
+        "meta":{"title":"routes.dashboard.workbench","roles": "[\"super\"]"}
       }
     ]
   },

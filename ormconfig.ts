@@ -39,7 +39,7 @@ export function buildConnectionOptions() {
     password: config[ConfigEnum.DB_PASSWORD],
     database: config[ConfigEnum.DB_DATABASE],
     // entities: entitiesDir,
-    autoLoadEntities: true,
+    autoLoadEntities: true, // entity 建完同步創建表
     synchronize: true,
     logging: false,
   } as TypeOrmModuleOptions;
