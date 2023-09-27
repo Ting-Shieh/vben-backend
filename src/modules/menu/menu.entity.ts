@@ -12,7 +12,7 @@ export class Menu {
   @Unique(['name'])
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   redirect: string;
 
   @Column()

@@ -41,7 +41,7 @@ export function buildConnectionOptions() {
     // entities: entitiesDir,
     autoLoadEntities: true, // entity 建完同步創建表
     synchronize: true,
-    logging: false,
+    logging: false, // 查看實際sql語句
   } as TypeOrmModuleOptions;
 }
 export const connectionParams = buildConnectionOptions();
