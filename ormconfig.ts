@@ -40,7 +40,7 @@ export function buildConnectionOptions() {
     database: config[ConfigEnum.DB_DATABASE],
     // entities: entitiesDir,
     autoLoadEntities: true, // entity 建完同步創建表
-    synchronize: true,
+    // synchronize: true, // entity 建完同步創建表
     logging: false, // 查看實際sql語句
   } as TypeOrmModuleOptions;
 }
