@@ -1,5 +1,20 @@
-import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Query,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+  ParseFilePipeBuilder,
+} from '@nestjs/common';
 import { BookService } from './book.service';
+import { wrapperCountResponse, wrapperResponse } from 'src/utils';
+import { FileInterceptor } from '@nestjs/platform-express/multer';
+import { getFileUploadPath } from 'src/utils/prop';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Controller('book')
 export class BookController {
@@ -7,10 +22,41 @@ export class BookController {
 
   @Get('')
   getBooks(@Query() params) {
-    return this.bookService.getBooks(params);
+    return wrapperCountResponse(
+      this.bookService.getBooks(params),
+      this.bookService.countBooks(params),
+      '獲取圖書列表成功',
+    );
   }
   @Get(':id')
   getBook(@Param('id', ParseIntPipe) id) {
     return 'book id is ' + id;
+  }
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadBook(
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: /epub/,
+        })
+        .build(),
+    )
+    file: Express.Multer.File,
+  ) {
+    console.log(file);
+    const cloudDir = getFileUploadPath();
+    const ebookUploadPath = path.resolve(cloudDir, file.originalname);
+    fs.writeFileSync(ebookUploadPath, file.buffer);
+    return wrapperResponse(
+      Promise.resolve().then(() => ({
+        originalName: file.originalname,
+        mimetype: file.mimetype,
+        size: file.size,
+        path: ebookUploadPath,
+        dir: cloudDir,
+      })),
+      '上傳文件成功',
+    );
   }
 }

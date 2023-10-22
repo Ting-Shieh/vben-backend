@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from './book.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { QueryBookDto } from './dto/query-book.dto';
 
 @Injectable()
@@ -32,5 +32,14 @@ export class BookService {
       (page - 1) * pageSize
     }`;
     return await this.bookRepository.query(sqlStr);
+  }
+
+  async countBooks(params: QueryBookDto) {
+    const { title = '', author = '' } = params;
+    const condition = {
+      title: Like(`%${title}%`),
+      author: Like(`%${author}%`),
+    };
+    return await this.bookRepository.countBy(condition);
   }
 }
