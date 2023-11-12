@@ -3,6 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from './book.entity';
 import { Like, Repository } from 'typeorm';
 import { QueryBookDto } from './dto/query-book.dto';
+import { getFileUploadPath } from 'src/utils/prop';
+import * as fs from 'fs';
+import * as path from 'path';
+import EpubBook from './epub-book';
 
 @Injectable()
 export class BookService {
@@ -41,5 +45,27 @@ export class BookService {
       author: Like(`%${author}%`),
     };
     return await this.bookRepository.countBy(condition);
+  }
+
+  uploadBook(file) {
+    // console.log(file);
+    const cloudDir = getFileUploadPath();
+    const ebookUploadPath = path.resolve(cloudDir, file.originalname);
+    fs.writeFileSync(ebookUploadPath, file.buffer);
+    // 電子書解析
+    return this.parseBook(ebookUploadPath, file).then((data) => {
+      return {
+        originalName: file.originalname,
+        mimetype: file.mimetype,
+        size: file.size,
+        path: ebookUploadPath,
+        dir: cloudDir,
+        data,
+      };
+    });
+  }
+  parseBook(bookPath, file) {
+    const epub = new EpubBook(bookPath, file);
+    return epub.parse();
   }
 }

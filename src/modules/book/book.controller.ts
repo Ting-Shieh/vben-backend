@@ -44,19 +44,7 @@ export class BookController {
     )
     file: Express.Multer.File,
   ) {
-    console.log(file);
-    const cloudDir = getFileUploadPath();
-    const ebookUploadPath = path.resolve(cloudDir, file.originalname);
-    fs.writeFileSync(ebookUploadPath, file.buffer);
-    return wrapperResponse(
-      Promise.resolve().then(() => ({
-        originalName: file.originalname,
-        mimetype: file.mimetype,
-        size: file.size,
-        path: ebookUploadPath,
-        dir: cloudDir,
-      })),
-      '上傳文件成功',
-    );
+    // console.log(file);
+    return wrapperResponse(this.bookService.uploadBook(file), '上傳文件成功');
   }
 }
